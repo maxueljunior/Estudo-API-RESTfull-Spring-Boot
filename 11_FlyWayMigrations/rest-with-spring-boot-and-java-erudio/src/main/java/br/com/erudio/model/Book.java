@@ -10,35 +10,37 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "books")
-public class Book implements Serializable {
+public class Book implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	@Column(nullable = false)
+	private Long id;
+	
+	@Column(nullable = false, length=180)
 	private String author;
-
-	@Column(name = "launc_date", nullable = false)
+	
+	@Column(name = "launch_date", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date launchDate;
-
+	
 	@Column(nullable = false)
 	private Double price;
-
-	@Column(nullable = false)
+	
+	@Column(nullable = false, length=250)
 	private String title;
-
+	
 	public Book() {
-
+		
 	}
 
-	public Book(Integer id, String author, Date launchDate, Double price, String title) {
-		super();
+	public Book(Long id, String author, Date launchDate, Double price, String title) {
 		this.id = id;
 		this.author = author;
 		this.launchDate = launchDate;
@@ -46,7 +48,7 @@ public class Book implements Serializable {
 		this.title = title;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -66,7 +68,7 @@ public class Book implements Serializable {
 		return title;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

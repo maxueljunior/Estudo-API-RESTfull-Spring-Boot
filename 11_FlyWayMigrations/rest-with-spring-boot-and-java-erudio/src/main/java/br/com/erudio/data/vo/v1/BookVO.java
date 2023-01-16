@@ -15,9 +15,9 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Mapping("id")
 	@JsonProperty("id")
-	private Integer key;
+	@Mapping("id")
+	private Long key;
 	private String author;
 	private Date launchDate;
 	private Double price;
@@ -27,16 +27,7 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 		
 	}
 
-	public BookVO(Integer key, String author, Date launchDate, Double price, String title) {
-		super();
-		this.key = key;
-		this.author = author;
-		this.launchDate = launchDate;
-		this.price = price;
-		this.title = title;
-	}
-
-	public Integer getKey() {
+	public Long getKey() {
 		return key;
 	}
 
@@ -56,7 +47,7 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 		return title;
 	}
 
-	public void setKey(Integer key) {
+	public void setKey(Long key) {
 		this.key = key;
 	}
 
@@ -97,5 +88,6 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 				&& Objects.equals(launchDate, other.launchDate) && Objects.equals(price, other.price)
 				&& Objects.equals(title, other.title);
 	}
+
 	
 }

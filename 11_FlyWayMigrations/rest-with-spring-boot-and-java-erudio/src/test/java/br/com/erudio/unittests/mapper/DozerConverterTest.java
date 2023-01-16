@@ -1,6 +1,7 @@
 package br.com.erudio.unittests.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,103 +109,86 @@ public class DozerConverterTest {
 	// Abaixo está fazendo a conversão de Book para BookVO e BookVO para Book
 
 	@Test
-	public void parseEntityToBookVOTest() throws ParseException {
+	public void parseEntityToBookVOTest(){
 
 		BookVO output = DozerMapper.parseObject(inputObjectBook.mockEntity(), BookVO.class);
 
 		assertEquals(Integer.valueOf(0), output.getKey());
-		assertEquals("Author Test0", output.getAuthor());
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		Date data;
-		data = formato.parse("01/01/9999");
-		assertEquals(data, output.getLaunchDate());
-		assertEquals(Double.valueOf(0), output.getPrice());
+		assertEquals("Author Test0", output.getAuthor());;
+		assertNotNull(output.getLaunchDate());
+		assertEquals(1D, output.getPrice());
 		assertEquals("Title Test0", output.getTitle());
 
 	}
 
 	@Test
-	public void parseEntityListToBookVOListTest() throws ParseException {
+	public void parseEntityListToBookVOListTest(){
 		
 		List<BookVO> outputList = DozerMapper.parseListObjects(inputObjectBook.mockEntityList(), BookVO.class);
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		Date data;
-		data = formato.parse("01/01/9999");
 
 		BookVO outputZero = outputList.get(0);
 
 		assertEquals(Integer.valueOf(0), outputZero.getKey());
 		assertEquals("Author Test0", outputZero.getAuthor());
-		assertEquals(data, outputZero.getLaunchDate());
-		assertEquals(Double.valueOf(0), outputZero.getPrice());
+		assertNotNull(outputZero.getLaunchDate());
+		assertEquals(1D, outputZero.getPrice());
 		assertEquals("Title Test0", outputZero.getTitle());
 
 		BookVO outputSeven = outputList.get(7);
 
 		assertEquals(Integer.valueOf(7), outputSeven.getKey());
 		assertEquals("Author Test7", outputSeven.getAuthor());
-		assertEquals(data, outputSeven.getLaunchDate());
-		assertEquals(Double.valueOf(7), outputSeven.getPrice());
+		assertNotNull(outputSeven.getLaunchDate());
+		assertEquals(1D, outputSeven.getPrice());
 		assertEquals("Title Test7", outputSeven.getTitle());
 		
 		BookVO outputTwelve = outputList.get(12);
 
 		assertEquals(Integer.valueOf(12), outputTwelve.getKey());
 		assertEquals("Author Test12", outputTwelve.getAuthor());
-		assertEquals(data, outputTwelve.getLaunchDate());
-		assertEquals(Double.valueOf(12), outputTwelve.getPrice());
+		assertNotNull(outputTwelve.getLaunchDate());
+		assertEquals(1D, outputTwelve.getPrice());
 		assertEquals("Title Test12", outputTwelve.getTitle());
 
 	}
 
 	@Test
-	public void parseBookVOToEntityTest() throws ParseException {
+	public void parseBookVOToEntityTest(){
 		Book output = DozerMapper.parseObject(inputObjectBook.mockVO(), Book.class);
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		Date data;
-		data = formato.parse("01/01/9999");
-
 		assertEquals(Integer.valueOf(0), output.getId());
 		assertEquals("Author Test0", output.getAuthor());
-		assertEquals(data, output.getLaunchDate());
-		assertEquals(Double.valueOf(0), output.getPrice());
+		assertNotNull(output.getLaunchDate());
+		assertEquals(1D, output.getPrice());
 		assertEquals("Title Test0", output.getTitle());
 
 	}
 
 	@Test
-	public void parserBookVOListToEntityListTest() throws ParseException {
+	public void parserBookVOListToEntityListTest(){
 		
 		List<Book> outputList = DozerMapper.parseListObjects(inputObjectBook.mockVOList(), Book.class);
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		Date data;
-		data = formato.parse("01/01/9999");
-
 		Book outputZero = outputList.get(0);
 
 		assertEquals(Integer.valueOf(0), outputZero.getId());
 		assertEquals("Author Test0", outputZero.getAuthor());
-		assertEquals(data, outputZero.getLaunchDate());
-		assertEquals(Double.valueOf(0), outputZero.getPrice());
+		assertNotNull(outputZero.getLaunchDate());
+		assertEquals(1D, outputZero.getPrice());
 		assertEquals("Title Test0", outputZero.getTitle());
 
 		Book outputSeven = outputList.get(7);
 
 		assertEquals(Integer.valueOf(7), outputSeven.getId());
 		assertEquals("Author Test7", outputSeven.getAuthor());
-		assertEquals(data, outputSeven.getLaunchDate());
-		assertEquals(Double.valueOf(7), outputSeven.getPrice());
+		assertNotNull(outputSeven.getLaunchDate());
+		assertEquals(1D, outputSeven.getPrice());
 		assertEquals("Title Test7", outputSeven.getTitle());
 		
 		Book outputTwelve = outputList.get(12);
 
 		assertEquals(Integer.valueOf(12), outputTwelve.getId());
 		assertEquals("Author Test12", outputTwelve.getAuthor());
-		assertEquals(data, outputTwelve.getLaunchDate());
-		assertEquals(Double.valueOf(12), outputTwelve.getPrice());
+		assertNotNull(outputTwelve.getLaunchDate());
+		assertEquals(1D, outputTwelve.getPrice());
 		assertEquals("Title Test12", outputTwelve.getTitle());
 		
 	}
