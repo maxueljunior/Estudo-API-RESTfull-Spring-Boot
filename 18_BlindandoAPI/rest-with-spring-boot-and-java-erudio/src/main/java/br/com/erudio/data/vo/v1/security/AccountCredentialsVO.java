@@ -13,6 +13,11 @@ public class AccountCredentialsVO implements Serializable{
 		this.username = username;
 		this.password = password;
 	}
+	
+	
+	public AccountCredentialsVO() {
+		
+	}
 
 	public String getUsername() {
 		return username;
