@@ -35,7 +35,7 @@ import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
-public class PersonControllerYamlTest extends AbstractIntegrationTest{
+public class PersonControllerYamlTest extends AbstractIntegrationTest {
 	
 	private static RequestSpecification specification;
 	private static YMLMapper objectMapper;
@@ -45,21 +45,27 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 	@BeforeAll
 	public static void setup() {
 		objectMapper = new YMLMapper();
-		
 		person = new PersonVO();
 	}
 	
-
 	@Test
 	@Order(0)
 	public void authorization() throws JsonMappingException, JsonProcessingException {
+		
 		AccountCredentialsVO user = new AccountCredentialsVO("leandro", "admin123");
 		
 		var accessToken = given()
+				.config(
+						RestAssuredConfig
+							.config()
+							.encoderConfig(EncoderConfig.encoderConfig()
+								.encodeContentTypeAs(
+									TestConfigs.CONTENT_TYPE_YML,
+									ContentType.TEXT)))
 				.basePath("/auth/signin")
 					.port(TestConfigs.SERVER_PORT)
-				.contentType(TestConfigs.CONTENT_TYPE_YML)
-				.accept(TestConfigs.CONTENT_TYPE_YML)
+					.contentType(TestConfigs.CONTENT_TYPE_YML)
+					.accept(TestConfigs.CONTENT_TYPE_YML)
 				.body(user, objectMapper)
 					.when()
 				.post()
@@ -90,7 +96,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 							.config()
 							.encoderConfig(EncoderConfig.encoderConfig()
 								.encodeContentTypeAs(
-									TestConfigs.CONTENT_TYPE_YML, 
+									TestConfigs.CONTENT_TYPE_YML,
 									ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
@@ -115,17 +121,16 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 		
 		assertTrue(persistedPerson.getId() > 0);
 		
-		assertEquals("Richard", persistedPerson.getFirstName());
-		assertEquals("Stallman", persistedPerson.getLastName());
-		assertEquals("New York City, New York, US", persistedPerson.getAddress());
+		assertEquals("Nelson", persistedPerson.getFirstName());
+		assertEquals("Piquet", persistedPerson.getLastName());
+		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
 	}
-	
+
 	@Test
 	@Order(2)
 	public void testUpdate() throws JsonMappingException, JsonProcessingException {
-		
-		person.setLastName("Stallman 123");
+		person.setLastName("Piquet Souto Maior");
 		
 		var persistedPerson = given().spec(specification)
 				.config(
@@ -133,7 +138,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 							.config()
 							.encoderConfig(EncoderConfig.encoderConfig()
 								.encodeContentTypeAs(
-									TestConfigs.CONTENT_TYPE_YML, 
+									TestConfigs.CONTENT_TYPE_YML,
 									ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
@@ -158,9 +163,9 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 		
 		assertEquals(person.getId(), persistedPerson.getId());
 		
-		assertEquals("Richard", persistedPerson.getFirstName());
-		assertEquals("Stallman 123", persistedPerson.getLastName());
-		assertEquals("New York City, New York, US", persistedPerson.getAddress());
+		assertEquals("Nelson", persistedPerson.getFirstName());
+		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
+		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
 	}
 
@@ -168,18 +173,17 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 	@Order(3)
 	public void testFindById() throws JsonMappingException, JsonProcessingException {
 		mockPerson();
-		
+			
 		var persistedPerson = given().spec(specification)
 				.config(
 						RestAssuredConfig
 							.config()
 							.encoderConfig(EncoderConfig.encoderConfig()
 								.encodeContentTypeAs(
-									TestConfigs.CONTENT_TYPE_YML, 
+									TestConfigs.CONTENT_TYPE_YML,
 									ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
-				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
 					.pathParam("id", person.getId())
 					.when()
 					.get("{id}")
@@ -198,33 +202,34 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 		assertNotNull(persistedPerson.getLastName());
 		assertNotNull(persistedPerson.getAddress());
 		assertNotNull(persistedPerson.getGender());
-		
+
 		assertEquals(person.getId(), persistedPerson.getId());
 		
-		assertEquals("Richard", persistedPerson.getFirstName());
-		assertEquals("Stallman 123", persistedPerson.getLastName());
-		assertEquals("New York City, New York, US", persistedPerson.getAddress());
+		assertEquals("Nelson", persistedPerson.getFirstName());
+		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
+		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
 	}
 	
 	@Test
 	@Order(4)
 	public void testDelete() throws JsonMappingException, JsonProcessingException {
+
 		given().spec(specification)
-		.config(
+			.config(
 				RestAssuredConfig
 					.config()
 					.encoderConfig(EncoderConfig.encoderConfig()
 						.encodeContentTypeAs(
-							TestConfigs.CONTENT_TYPE_YML, 
+							TestConfigs.CONTENT_TYPE_YML,
 							ContentType.TEXT)))
-				.contentType(TestConfigs.CONTENT_TYPE_YML)
-				.accept(TestConfigs.CONTENT_TYPE_YML)
-					.pathParam("id", person.getId())
-					.when()
-					.delete("{id}")
-				.then()
-					.statusCode(204);
+			.contentType(TestConfigs.CONTENT_TYPE_YML)
+			.accept(TestConfigs.CONTENT_TYPE_YML)
+				.pathParam("id", person.getId())
+				.when()
+				.delete("{id}")
+			.then()
+				.statusCode(204);
 	}
 	
 	@Test
@@ -237,7 +242,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 							.config()
 							.encoderConfig(EncoderConfig.encoderConfig()
 								.encodeContentTypeAs(
-									TestConfigs.CONTENT_TYPE_YML, 
+									TestConfigs.CONTENT_TYPE_YML,
 									ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
@@ -248,12 +253,11 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 						.extract()
 						.body()
 						.as(PersonVO[].class, objectMapper);
-							//.as(new TypeRef<List<PersonVO>>() {});
 		
 		List<PersonVO> people = Arrays.asList(content);
 		
 		PersonVO foundPersonOne = people.get(0);
-	
+		
 		assertNotNull(foundPersonOne.getId());
 		assertNotNull(foundPersonOne.getFirstName());
 		assertNotNull(foundPersonOne.getLastName());
@@ -282,39 +286,39 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest{
 		assertEquals("Mvezo – South Africa", foundPersonSix.getAddress());
 		assertEquals("Male", foundPersonSix.getGender());
 	}
+
 	
 	@Test
 	@Order(6)
 	public void testFindAllWithoutToken() throws JsonMappingException, JsonProcessingException {
 		
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
-				.setBasePath("/api/person/v1")
-				.setPort(TestConfigs.SERVER_PORT)
-					.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-					.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-				.build();
+			.setBasePath("/api/person/v1")
+			.setPort(TestConfigs.SERVER_PORT)
+				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+			.build();
 		
 		given().spec(specificationWithoutToken)
-		.config(
+			.config(
 				RestAssuredConfig
 					.config()
 					.encoderConfig(EncoderConfig.encoderConfig()
 						.encodeContentTypeAs(
-							TestConfigs.CONTENT_TYPE_YML, 
+							TestConfigs.CONTENT_TYPE_YML,
 							ContentType.TEXT)))
-				.contentType(TestConfigs.CONTENT_TYPE_YML)
-				.accept(TestConfigs.CONTENT_TYPE_YML)
-					.when()
-					.get()
-				.then()
-					.statusCode(403);
+			.contentType(TestConfigs.CONTENT_TYPE_YML)
+			.accept(TestConfigs.CONTENT_TYPE_YML)
+				.when()
+				.get()
+			.then()
+				.statusCode(403);
 	}
 	
 	private void mockPerson() {
-		person.setFirstName("Richard");
-		person.setLastName("Stallman");
-		person.setAddress("New York City, New York, US");
+		person.setFirstName("Nelson");
+		person.setLastName("Piquet");
+		person.setAddress("Brasília - DF - Brasil");
 		person.setGender("Male");
 	}
-
 }
