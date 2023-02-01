@@ -25,6 +25,7 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BookVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelBook;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -232,7 +233,7 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 	@Test
 	@Order(5)
 	public void testFindAll() throws JsonMappingException, JsonProcessingException {
-		var content = given().spec(specification)
+		var wrapper = given().spec(specification)
 				.config(
 						RestAssuredConfig
 							.config()
@@ -242,15 +243,16 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 											ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 0, "size", 12, "direction", "asc")
 					.when()
 					.get()
 				.then()
 					.statusCode(200)
 						.extract()
 						.body()
-							.as(BookVO[].class, objectMapper);
+							.as(PagedModelBook.class, objectMapper);
 		
-		List<BookVO> livro = Arrays.asList(content);
+		var livro = wrapper.getContent();
 		
 		BookVO foundBookOne = livro.get(0);
 		
@@ -260,11 +262,11 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundBookOne.getTitle());
 		assertNotNull(foundBookOne.getPrice());
 		
-		assertEquals(1, foundBookOne.getId());
+		assertEquals(15, foundBookOne.getId());
 		
-		assertEquals("Michael C. Feathers", foundBookOne.getAuthor());
-		assertEquals(49.0, foundBookOne.getPrice());
-		assertEquals("Working effectively with legacy code", foundBookOne.getTitle());
+		assertEquals("Aguinaldo Aragon Fernandes e Vladimir Ferraz de Abreu", foundBookOne.getAuthor());
+		assertEquals(54.0, foundBookOne.getPrice());
+		assertEquals("Implantando a governança de TI", foundBookOne.getTitle());
 		
 		
 		BookVO foundBookThree = livro.get(4);
@@ -275,11 +277,11 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
 		assertNotNull(foundBookThree.getTitle());
 		assertNotNull(foundBookThree.getPrice());
 		
-		assertEquals(5, foundBookThree.getId());
+		assertEquals(7, foundBookThree.getId());
 		
-		assertEquals("Steve McConnell", foundBookThree.getAuthor());
-		assertEquals(58.0, foundBookThree.getPrice());
-		assertEquals("Code complete", foundBookThree.getTitle());
+		assertEquals("Eric Freeman, Elisabeth Freeman, Kathy Sierra, Bert Bates", foundBookThree.getAuthor());
+		assertEquals(110.0, foundBookThree.getPrice());
+		assertEquals("Head First Design Patterns", foundBookThree.getTitle());
 	}
 	
 	@Test

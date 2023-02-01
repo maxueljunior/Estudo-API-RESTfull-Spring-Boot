@@ -3,23 +3,23 @@ package br.com.erudio.integrationtests.vo.pagedmodels;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.erudio.integrationtests.vo.PersonVO;
+import br.com.erudio.integrationtests.vo.BookVO;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class PagedModelPerson{
+public class PagedModelBook {
 	
 	@XmlElement(name = "content")
-	private List<PersonVO> content;
+	private List<BookVO> content;
 
-	public PagedModelPerson() {}
+	public PagedModelBook() {}
 
-	public List<PersonVO> getContent() {
+	public List<BookVO> getContent() {
 		return content;
 	}
 
-	public void setContent(List<PersonVO> content) {
+	public void setContent(List<BookVO> content) {
 		this.content = content;
 	}
 
@@ -36,8 +36,7 @@ public class PagedModelPerson{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PagedModelPerson other = (PagedModelPerson) obj;
+		PagedModelBook other = (PagedModelBook) obj;
 		return Objects.equals(content, other.content);
 	}
-	
 }
