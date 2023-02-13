@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './styles.css';
 import api from '../../services/api'
 import logoImage from '../../assets/logo.svg'
@@ -10,7 +10,7 @@ export default function Login(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     async function login(e){
         e.preventDefault();
@@ -23,7 +23,7 @@ export default function Login(){
 
             localStorage.setItem('username', username);
             localStorage.setItem('accessToken', response.data.token);
-            history.push('/books')
+            navigate('/books')
         }catch(err){
             alert('Login falhou, tente denovo');
         }
@@ -43,7 +43,7 @@ export default function Login(){
                     <input
                          type="password" placeholder="Password"
                          value={password}
-                         onChange={e => setPassword(e.target.value)
+                         onChange={e => setPassword(e.target.value)}
                     />
                     <button className="button" type="submit">Login</button>
                 </form>

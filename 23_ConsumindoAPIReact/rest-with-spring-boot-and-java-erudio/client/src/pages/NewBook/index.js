@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useHistory, Link, useParams } from 'react-router-dom'
+import { useNavigate, Link, useParams } from 'react-router-dom'
 import './styles.css';
 import logoImage from '../../assets/logo.svg'
 import {FiArrowLeft} from 'react-icons/fi'
@@ -17,7 +17,7 @@ export default function NewBook(){
 
     const username = localStorage.getItem('username');
     const accessToken = localStorage.getItem('accessToken');
-    const history = useHistory();
+    const navigate = useNavigate();
 
     async function loadBook(){
         try {
@@ -37,7 +37,7 @@ export default function NewBook(){
 
         } catch (err) {
             alert('Erro ao recuperar o livro, tente novamente');
-            history.push('/books');
+            navigate('/books');
         }
     }
 
@@ -70,7 +70,7 @@ export default function NewBook(){
                 });
             }
             
-            history.push('/books');
+            navigate('/books');
         } catch (err) {
             alert('Erro ao gravar um novo livro, tente novamente');
         }
